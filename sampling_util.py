@@ -6,25 +6,27 @@ import itertools
 import math
 
 """
-Data loader
+Data loading
 """
 
 
 def load_G(data_name):
     G = nx.read_edgelist('data_set/' + data_name, nodetype=int, create_using=nx.Graph())
+
     # G.remove_edges_from(G.selfloop_edges())
+
+    # remap the node names from 0,1,2,....,|V|-1
     mapping = {}
     nodes = sorted(nx.nodes(G))
     for i in range(len(nodes)):
         mapping[nodes[i]] = i
-    # for i, n in enumerate(sorted(nx.nodes(G))):
-    #     mapping[n] = i
     G = nx.relabel_nodes(G, mapping)
+
     return G
 
 
 """
-Basic functinos
+Basic functions
 """
 
 
@@ -49,13 +51,38 @@ def binom(n, r):
         return 1
     return math.factorial(n) // (math.factorial(n - r) * math.factorial(r))
 
+
 def choose_one(l):
     return l[np.random.randint(0, len(l))]
 
 
+
+def diff(x, y):
+    """
+    :return one element that is in x but not in y
+    :param x:
+    :param y:
+    :return:
+    """
+    for u in x:
+        if not u in y:
+            return u
+
+
+def state_merge(x, y):
+    """
+    return a tuple of union of elements in x and y
+    :param x:
+    :param y:
+    :return: tuple
+    """
+    l = set(x).union(set(y))
+    return tuple(sorted(l))
+
 """
 Subgraph sampling utilities
 """
+
 
 def neighbor_nodes(G, s) -> set:
     """
@@ -121,7 +148,6 @@ def neighbor_states(G, s):
 def random_next_state(neighbor_states):
     next_state = choose_one(neighbor_states)
     return next_state
-
 
 
 def neighbor_edges(G, s):
