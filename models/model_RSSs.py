@@ -104,7 +104,7 @@ class RSS2(RSS):
             return self.edges[np.random.choice(self.edge_arange, 1, p=self.edge_prob)[0]]
 
         u = self.degree_prop_state_sample(k - 1)
-        neighbor_of_u = self.Gk.neighbor_states(u)
+        neighbor_of_u = neighbor_states(self.G, u)
         v = choose_one(neighbor_of_u)
         curr_s = state_merge(u, v)
         curr_f = self.estimate_degree(curr_s, u, v, neighbor_of_u)
@@ -115,7 +115,7 @@ class RSS2(RSS):
                 continue
 
             u = self.degree_prop_state_sample(k - 1)
-            neighbor_of_u = self.Gk.neighbor_states(u)
+            neighbor_of_u = neighbor_states(self.G,u)
             v = choose_one(neighbor_of_u)
             next_s = state_merge(u, v)
             next_f = self.estimate_degree(next_s, u, v, neighbor_of_u)

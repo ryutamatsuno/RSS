@@ -18,7 +18,7 @@ from datetime import datetime
 # import u_time
 
 from sampling_util import load_G
-from model_RSSs import RecursiveSampling, RecursiveSampling2
+from models.model_RSSs import RSS, RSS2
 
 
 # from Model_MCMC import MCMCSampling
@@ -45,6 +45,7 @@ if __name__ == "__main__":
     data_name = sys.argv[1]
     k = int(sys.argv[2])
     model_name = sys.argv[3]
+    n_samples = int(sys.argv[4]) if len(sys.argv) > 4 else 10
 
     # load graph data
     if not '.' in data_name:
@@ -61,9 +62,9 @@ if __name__ == "__main__":
 
     # load model
     if model_name == "RSS":
-        sampler = RecursiveSampling(G, e)
-    elif model_name == "RSS+":
-        sampler = RecursiveSampling2(G, e)
+        sampler = RSS(G, e)
+    elif model_name == "RSS+" or model_name == "RSS2" :
+        sampler = RSS2(G, e)
     elif model_name == "MCMC":
         sampler = MCMCSampling(G, e, use_buffer=False)
     elif model_name == "PSRW":
@@ -75,12 +76,25 @@ if __name__ == "__main__":
     print('data set:', data_name)
     print("n=", n, ", m=", len(nx.edges(G)), ", k=", k, ", e=", e)
     print("model_name:", model_name)
+    print("n_samples:", n_samples)
 
     # sampling start
 
-    fstart = time.time()
-    start = time.time()
-    v = sampler.uniform_state_sample(k)
-    t = time.time() - start
-    print('sampling_time:%12.8f[s]' % t, ' sample:', v)
+    ts = []
+    for l in range(n_samples):
+        start = time.time()
+        v = sampler.uniform_state_sample(k)
+        t = time.time() - start
+        ts.append(t)
+        if l % int(n_samples/10) == 0:
+            print('%7d/%d %12.8f[s]' % (l, n_samples, t), ' sample:', v)
+
+    averagetime = np.mean(ts)
+    stdv = np.std(ts)
+
+    print("Sampling time:", averagetime, ' +-', stdv ,'[s]')
+    # print("avg:", averagetime)
+    # print("std:", stdv)
+
+
 

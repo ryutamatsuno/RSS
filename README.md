@@ -16,13 +16,34 @@ pandas>=0.25.0
 
 
 
-## Usage
+## Usage Example
 
+### Actual sampling time
 
-```shell
-python3 main.py
+```
+> python3 exp_samplingtime.py ba10 3 RSS 100
+data set: ba10.edg
+n= 10 , m= 16 , k= 3 , e= 0.05
+model_name: RSS2
+n_samples: 100
+      0/100   0.00051570[s]  sample: (1, 3, 4)
+     10/100   0.00038052[s]  sample: (2, 4, 5)
+     20/100   0.00037479[s]  sample: (1, 4, 5)
+     30/100   0.00042248[s]  sample: (2, 7, 8)
+     40/100   0.00036335[s]  sample: (4, 5, 9)
+     50/100   0.00050211[s]  sample: (2, 3, 6)
+     60/100   0.00051332[s]  sample: (2, 3, 7)
+     70/100   0.00047135[s]  sample: (1, 4, 9)
+     80/100   0.00100541[s]  sample: (2, 4, 8)
+     90/100   0.00046992[s]  sample: (2, 3, 4)
+Sampling time: 0.0005170845985412598  +- 0.0002009598472167978 [s]
 ```
 
+### Estimated sampling time
+
+```
+> python3 exp_estimatedtime.py ba10 3 RSS
+```
 
 
 ## Citation

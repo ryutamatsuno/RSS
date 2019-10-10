@@ -30,6 +30,7 @@ Basic functions
 """
 
 
+
 def ln(x):
     return math.log(x)
 
@@ -78,6 +79,26 @@ def state_merge(x, y):
     """
     l = set(x).union(set(y))
     return tuple(sorted(l))
+
+
+def num_edges_yields(x, y, neighbor_of_x):
+    """
+    number of edges that yield the state (x U y)
+    :param x:
+    :param y:
+    :param neighbor_of_x:
+    :return:
+    """
+
+    df = diff(y, x)
+    m = 1
+    for an in neighbor_of_x:
+        if df in an:
+            m += 1
+
+    # return m * (m - 1) / 2
+    return binom(m, 2)
+
 
 """
 Subgraph sampling utilities
