@@ -3,12 +3,12 @@ import random
 import networkx as nx
 import numpy as np
 
-from sampling_util import ln, binom, choose_one, degree, neighbor_states, diff, state_merge
+from sampling_util import ln, binom, choose_one, degree, neighbor_states, diff, state_merge, num_edges_yields
 
 
 
 
-class RecursiveSampling:
+class RSS:
 
     def __init__(self, G, e=0.01):
         self.G = G
@@ -69,31 +69,13 @@ class RecursiveSampling:
             # print(s)
             s_neighbor = neighbor_states(self.G, s)
             n = choose_one(s_neighbor)
-            m = self.num_edges_yields(s, n, s_neighbor)
+            m = num_edges_yields(s, n, s_neighbor)
             if random.random() < 1 / m:
                 return state_merge(s, n)
 
-    def num_edges_yields(self, x, y, neighbor_of_x):
-        """
-        number of edges that yield the state (x U y)
-        :param x:
-        :param y:
-        :param neighbor_of_x:
-        :return:
-        """
-
-        df = diff(y, x)
-        m = 1
-        for an in neighbor_of_x:
-            if df in an:
-                m += 1
-
-        num_edges_among_targets = m * (m - 1) / 2
-
-        return num_edges_among_targets
 
 
-class RecursiveSampling2(RecursiveSampling):
+class RSS2(RSS):
     """
     Only use degree_prop_sampling
     """
@@ -115,7 +97,7 @@ class RecursiveSampling2(RecursiveSampling):
         :param neighbors: neighbors of e[0]
         :return:
         """
-        return degree(self.G, s) / self.num_edges_yields(u, v, neighbors)
+        return degree(self.G, s) / num_edges_yields(u, v, neighbors)
 
     def degree_prop_state_sample(self, k):
         if k == 2:
