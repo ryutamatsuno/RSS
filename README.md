@@ -42,7 +42,27 @@ Sampling time: 0.0005170845985412598  +- 0.0002009598472167978 [s]
 ### Estimated sampling time
 
 ```
-> python3 exp_estimatedtime.py ba10 3 RSS
+> python3 exp_estimatedtime.py ba10 3 RSS 100
+data set: ba10
+n= 10 , m= 16 , k= 3 , e= 0.05
+model_name: RSS
+n_samples: 100
+Preloading: 3
+UniformSampling   : 0.0009583020210266113
+DegreePropSampling: 0.38076204110383993
+
+Done: 0.0016303062438964844 [s]
+      0/100           0.000638[s]
+     10/100           0.001529[s]
+     20/100           0.003451[s]
+     30/100           0.000499[s]
+     40/100           0.002074[s]
+     50/100           0.000943[s]
+     60/100           0.000419[s]
+     70/100           0.001246[s]
+     80/100           0.000377[s]
+     90/100           0.001246[s]
+Estimated Sampling time: 0.0008749151229858398  +- 0.0006712058020837339 [s]
 ```
 
 

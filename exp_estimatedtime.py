@@ -13,14 +13,8 @@ import networkx as nx
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# import u_time
-
 from sampling_util import load_G
-from models.model_RSSs import RSS, RSS2
-
-# from Model_MCMC import MCMCSampling
-# from Model_PSRW import PSRW
-
+from models.time_RSSs import RSS, RSS2
 
 if __name__ == "__main__":
 
@@ -44,15 +38,14 @@ if __name__ == "__main__":
     # error parameter
     e = 0.05
 
-    # load model
     if model_name == "RSS":
-        sampler = RSS(G, e)
+        sampler = RSS(G, e, data_name)
     elif model_name == "RSS+" or model_name == "RSS2":
-        sampler = RSS2(G, e)
+        sampler = RSS2(G, e, data_name)
     elif model_name == "MCMC":
-        sampler = MCMCSampling(G, e, use_buffer=False)
+        sampler = MCMCSampling(G, e)
     elif model_name == "PSRW":
-        sampler = PSRW(G, e, use_buffer=False)
+        sampler = PSRW(G, e)
     else:
         raise ValueError("%s is not implemented" % model_name)
 
@@ -65,13 +58,11 @@ if __name__ == "__main__":
 
     ts = []
     for l in range(n_samples):
-        start = time.time()
-        v = sampler.uniform_state_sample(k)
-        t = time.time() - start
+        t = sampler.time(k)
         ts.append(t)
         if l % int(n_samples / 10) == 0:
-            print('%7d/%d %12.8f[s]' % (l, n_samples, t), ' sample:', v)
+            print('%7d/%d %18.6f[s]' % (l, n_samples, t))
 
     averagetime = np.mean(ts)
     stdv = np.std(ts)
-    print("Sampling time:", averagetime, ' +-', stdv, '[s]')
+    print("Estimated Sampling time:", averagetime, ' +-', stdv, '[s]')
