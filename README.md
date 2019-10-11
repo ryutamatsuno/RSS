@@ -18,6 +18,24 @@ If you use other package managers, e.g., pip3, conda, install these libraries by
 
 ## Usage Example
 
+### Obtain k-subgrah samples
+
+```
+
+```
+
+## Experiments
+
+```
+
+```
+
+### Uniformity
+
+```
+> python3 exp_uniformity.py ba10 4 RSS2 0.001
+```
+
 ### Actual sampling time
 
 ```

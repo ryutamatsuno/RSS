@@ -11,6 +11,8 @@ Data loading
 
 
 def load_G(data_name):
+    if data_name[-4:] != '.edg':
+        data_name += '.edg'
     G = nx.read_edgelist('data_set/' + data_name, nodetype=int, create_using=nx.Graph())
 
     # G.remove_edges_from(G.selfloop_edges())
@@ -46,11 +48,14 @@ def boundVk(G, k):
     delta = max([nx.degree(G, n) for n in nx.nodes(G)])
     return math.factorial(k - 1) * delta ** (k - 1) * n
 
-
 def binom(n, r):
-    if r == 0:
+    if r == 0 or n == r:
         return 1
-    return math.factorial(n) // (math.factorial(n - r) * math.factorial(r))
+    x = n
+    for i in range(max(r,n-r)+1,n):
+        x *= i
+    x /= math.factorial(min(r,n-r))
+    return x
 
 
 def choose_one(l):
@@ -125,45 +130,87 @@ def neighbor_nodes(G, s) -> set:
     nb = nb.difference(set(s))
     return nb
 
-
-def degree(G, s):
+def __removable(G, s):
     """
-    state degree in |s|-state graph G^{|s|}
-    :param G: nx.Graph
-    :param s: tuple of nodes
+    return removable nodes do no think about the adding node
+    :param G:
+    :param s:
     :return:
     """
+    rem = set()
+    news = set(s)
+    for y in s:
+        news.discard(y)
+        H = G.subgraph(news)
+        if nx.is_connected(H):
+            rem.add(y)
+        news.add(y)
+    unrem = news.difference(rem)
+    return rem, unrem
+
+def degree(G,s):
     d = 0
-    temp = set(s)
+    news = set(s)
+    do_remove, mynot_remove = __removable(G, s)
+
     for x in neighbor_nodes(G, s):
-        temp.add(x)
+
+        # check if
+        nei_x = set(nx.neighbors(G,x))
+        node_connected2x = news.intersection(nei_x)
+
+        news.add(x)
         for y in s:
-            temp.discard(y)
-            H = G.subgraph(temp)
+            if len(node_connected2x) == 1 and (y in node_connected2x or y in mynot_remove):
+                continue
+            if y in do_remove:
+                d += 1
+                continue
+
+            news.discard(y)
+            H = G.subgraph(news)
             if nx.is_connected(H):
                 d += 1
-            temp.add(y)
-        temp.discard(x)
+            news.add(y)
+        news.discard(x)
     return d
+
+
 
 
 def neighbor_states(G, s):
     """
-    return neighbor state in |s|-state graph G^{|s|}
-    :param s: tuple
-    :return:
+    :param s: tuple return list of tuple
+    :return: [next_s] : next states
     """
-    nei_states = []
-    k = len(s)
+    states = []
+    news = set(s)
+    do_remove, mynot_remove = __removable(G, s)
+
     for x in neighbor_nodes(G, s):
-        for j in range(k):
-            news = list(s)
-            news.append(x)
-            del news[j]
+
+        # check if
+        nei_x = set(nx.neighbors(G, x))
+        node_connected2x = news.intersection(nei_x)
+
+        news.add(x)
+        for y in s:
+            if len(node_connected2x) == 1 and (y in node_connected2x or y in mynot_remove):
+                continue
+            if y in do_remove:
+               news.discard(y)
+               states.append(tuple(sorted(news)))
+               news.add(y)
+               continue
+
+            news.discard(y)
             H = G.subgraph(news)
             if nx.is_connected(H):
-                nei_states.append(tuple(sorted(news)))
-    return nei_states
+                states.append(tuple(sorted(news)))
+            news.add(y)
+        news.discard(x)
+    return states
+
 
 
 def random_next_state(neighbor_states):
@@ -222,3 +269,28 @@ def RVE2(G, k):
         nei = list(neighbor_nodes(G, s))
         s.append(choose_one(nei))
     return tuple(sorted(s))
+
+
+
+def gen_all_ksub(G, k):
+    """
+
+    :param G:
+    :param k:
+    :return: list of touples
+    """
+    if k == 1:
+        return [(n,) for n in G.nodes()]
+    if k == 2:
+        return [tuple(e if e[0] < e[1] else (e[1],e[0])) for e in nx.edges(G)]
+
+    N = len(G)
+    ite = itertools.combinations(np.arange(N), k)
+    S = []
+    nodes = np.array(G.nodes(),dtype=int)
+    for v in ite:
+        x = nodes[np.array(v)]
+        H = G.subgraph(x)
+        if nx.is_connected(H):
+            S.append(tuple(sorted(x)))
+    return S

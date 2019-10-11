@@ -6,23 +6,11 @@ import networkx as nx
 import numpy as np
 
 
-from sampling_util import ln, binom, choose_one, RVE2, neighbor_states, degree, diff, num_edges_yields
+from sampling_util import ln, binom, choose_one, RVE2, neighbor_states, degree, diff, num_edges_yields, state_merge
 
 import u_time
 
 from models.model_RSSs import RSS as actRSS, RSS2 as actRSS2
-
-
-def state_marge(x, y):
-    """
-    :param x:
-    :param y:
-    :return: tuple
-    """
-    if isinstance(x, int):
-        return (x, y) if x < y else (y, x)
-    l = set(x).union(set(y))
-    return tuple(sorted(l))
 
 
 topdir = './samplingtime_buf'
@@ -51,6 +39,8 @@ class RSS:
         self.loaded = set()
         self.tU = {}
         self.tD = {}
+
+        self.n = len(self.G.nodes())
 
     def time(self, k):
         self.preload_time(k)
@@ -89,9 +79,9 @@ class RSS:
                 self.tU[k] = np.loadtxt(fname, delimiter=',').tolist()
             else:
                 # actual time
-                if type(self) == RecursiveSampling:
+                if type(self) == RSS:
                     sampler = actRSS(self.G, self.e)
-                elif type(self) == RecursiveSampling2:
+                elif type(self) == RSS2:
                     sampler = actRSS2(self.G, self.e)
                 ts = []
                 for l in range(n_buf_samples):
@@ -166,7 +156,7 @@ class RSS:
 
         e = self.e
         delta = self.delta
-        n = len(self.G.nodes())
+        n = self.n
         rho = 2 * delta * k
         tau = rho * (ln(binom(n, k)) + ln(k) + ln(delta) + ln(1 / e))
         t = int(math.ceil(tau))
@@ -248,7 +238,7 @@ class RSS2(RSS):
 
         e = self.e
         delta = self.delta
-        n = len(self.G.nodes())
+        n = self.n
         rho = 2 * delta * k
         tau = rho * (ln(binom(n, k)) + 3 * ln(k) + ln(delta) + ln(1 / e))
         t = int(math.ceil(tau))
@@ -267,10 +257,6 @@ class RSS2(RSS):
         if k in self.tD:
             return np.random.choice(self.tD[k], 1)[0]
 
-        # if k == 1:
-        #     u_time.start()
-        #     x = np.random.choice(self.nodes, 1, p=self.node_prob)[0]
-        #     return u_time.stop()
         if k == 2:
             u_time.start()
             x = self.edges[np.random.choice(self.edge_arange, 1, p=self.edge_prob)[0]]
@@ -287,7 +273,7 @@ class RSS2(RSS):
         u_time.start()
         neighbor_of_u = neighbor_states(self.G, u)
         v = choose_one(neighbor_of_u)
-        curr_s = state_marge(u, v)
+        curr_s = state_merge(u, v)
         curr_f = self.estimate_degree(curr_s, u, v, neighbor_of_u)
         u_time.stop()
 
@@ -307,7 +293,7 @@ class RSS2(RSS):
 
             neighbor_of_u = neighbor_states(self.G, u)
             v = choose_one(neighbor_of_u)
-            next_s = state_marge(u, v)
+            next_s = state_merge(u, v)
             next_f = self.estimate_degree(next_s, u, v, neighbor_of_u)
 
             if random.random() < min(1, next_f / curr_f):

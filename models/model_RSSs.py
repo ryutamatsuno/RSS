@@ -23,6 +23,7 @@ class RSS:
         self.edge_prob = self.edge_prob / np.sum(self.edge_prob)
         self.edge_arange = np.arange(0, len(self.edges))
 
+        self.n = len(self.G.nodes())
 
     def t_k(self, k):
         e = self.e
@@ -83,7 +84,7 @@ class RSS2(RSS):
     def t_k(self, k):
         e = self.e
         delta = self.delta
-        n = len(self.G.nodes())
+        n = self.n
 
         rho = 2 * k * delta
         tau = rho * (ln(binom(n, k)) + 3 * ln(k) + ln(delta) + ln(1 / e))
