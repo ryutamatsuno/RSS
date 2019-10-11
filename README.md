@@ -9,10 +9,10 @@ Basic implementation of RSS and RSS+ for SDM 2020 paper: Improved mixing time of
 Please run setup.sh to install numpy, networkx, and pandas by pip.
 If you use other package managers, e.g., pip3, conda, install these libraries by mannually.
 
-Python>=3.0
-Numpy>=1.16.0
-NetworkX>= 2.0
-pandas>=0.25.0
+- Python >=3.0
+- NumPy >=1.16.0
+- NetworkX >= 2.0
+- pandas >=0.25.0
 
 
 

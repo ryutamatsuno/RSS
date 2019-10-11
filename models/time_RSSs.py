@@ -1,14 +1,14 @@
+import os
 import math
+import time
 import random
 import networkx as nx
 import numpy as np
-import os
+
 
 from sampling_util import ln, binom, choose_one, RVE2, neighbor_states, degree, diff, num_edges_yields
-# from Model_units import Gkp
 
 import u_time
-import time
 
 from models.model_RSSs import RSS as actRSS, RSS2 as actRSS2
 
@@ -79,7 +79,9 @@ class RSS:
     def generate_buf(self, k):
         # inside preload
         print('Preloading:', k)
-        n_samples = 100
+
+        n_buf_samples = 100
+
         if k == 3:
             # U
             fname = self.buf_file_name(k, 'U')
@@ -92,7 +94,7 @@ class RSS:
                 elif type(self) == RecursiveSampling2:
                     sampler = actRSS2(self.G, self.e)
                 ts = []
-                for l in range(n_samples):
+                for l in range(n_buf_samples):
                     start = time.time()
                     sampler.uniform_state_sample(k)
                     t = time.time() - start
@@ -111,7 +113,7 @@ class RSS:
                 elif type(self) == RecursiveSampling2:
                     sampler = actRSS2(self.G, self.e)
                 ts = []
-                for l in range(n_samples):
+                for l in range(n_buf_samples):
                     start = time.time()
                     sampler.degree_prop_state_sample(2)
                     t = time.time() - start
@@ -125,7 +127,7 @@ class RSS:
                 self.tD[k] = np.loadtxt(fname, delimiter=',').tolist()
             else:
                 ts = []
-                for l in range(n_samples):
+                for l in range(n_buf_samples):
                     t = self.time_degree_prop_state_sample(k)
                     ts.append(t)
                 np.savetxt(fname, np.array(ts), delimiter=',')
@@ -138,7 +140,7 @@ class RSS:
                 self.tU[k] = np.loadtxt(fname, delimiter=',').tolist()
             else:
                 ts = []
-                for l in range(n_samples):
+                for l in range(n_buf_samples):
                     t = self.time_uniform_state_sample(k)
                     ts.append(t)
                 np.savetxt(fname, np.array(ts), delimiter=',')
@@ -151,7 +153,7 @@ class RSS:
                 self.tD[k] = np.loadtxt(fname, delimiter=',').tolist()
             else:
                 ts = []
-                for l in range(n_samples):
+                for l in range(n_buf_samples):
                     t = self.time_degree_prop_state_sample(k)
                     ts.append(t)
                 np.savetxt(fname, np.array(ts), delimiter=',')
