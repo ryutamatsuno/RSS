@@ -40,12 +40,6 @@ if __name__ == "__main__":
     n = len(G)
     m = len(G.edges())
 
-
-
-
-    # generate ratio for each subgraph
-
-
     print('arguments;')
     print('data set         :', data_name)
     print("k                :", k)

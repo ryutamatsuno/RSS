@@ -10,6 +10,7 @@ import networkx as nx
 
 import random
 
+from models.core_RSSs import t_k, t_k2
 from sampling_util import ln, binom, neighbor_states, degree, num_edges_yields, state_merge
 
 
@@ -31,15 +32,7 @@ class RSS:
 
 
     def t_k(self, k):
-        if self.mixing_time_ratio == 0:
-            return 0
-        e = self.e
-        delta = self.delta
-        n = self.n
-        rho = 2 * delta * k
-        tau = rho * (ln(binom(n, k)) + ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau * self.mixing_time_ratio))
-        return t
+        return t_k(self.n, k, self.e, self.delta, self.mixing_time_ratio)
 
     def degree_prop_state_sample(self, k, n_samples) -> list:
         if k == 2:
@@ -97,17 +90,7 @@ class RSS:
 class RSS2(RSS):
 
     def t_k(self, k):
-        if self.mixing_time_ratio == 0:
-            return 0
-        e = self.e
-        delta = self.delta
-        n = self.n
-        rho = 2 * delta * k
-        tau = rho * (ln(binom(n, k)) + 3 * ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau * self.mixing_time_ratio))
-        if t == 0:
-            t = 1
-        return t
+        return t_k2(self.n, k, self.e, self.delta, self.mixing_time_ratio)
 
     def degree_prop_state_sample(self, k, n_samples, top_mask=None) -> [tuple]:
         if k == 2:
