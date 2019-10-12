@@ -10,9 +10,11 @@ from sampling_util import ln, binom, choose_one, degree, neighbor_states, diff, 
 
 class RSS:
 
-    def __init__(self, G, e=0.01):
+    def __init__(self, G, e=0.01, mixing_time_ratio=1.0):
         self.G = G
         self.e = e
+        self.mixing_time_ratio = mixing_time_ratio
+
         self.delta = max([nx.degree(G, n) for n in G.nodes()])
 
         # for uniform 2-subgraph sampling
@@ -26,13 +28,15 @@ class RSS:
         self.n = len(self.G.nodes())
 
     def t_k(self, k):
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = len(self.G.nodes())
 
         rho = 2 * k * delta
         tau = rho * (ln(binom(n, k)) + ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau))
+        t = int(math.ceil(tau * self.mixing_time_ratio))
         return t
 
     def degree_prop_state_sample(self, k):
@@ -82,13 +86,15 @@ class RSS2(RSS):
     """
 
     def t_k(self, k):
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = self.n
 
         rho = 2 * k * delta
         tau = rho * (ln(binom(n, k)) + 3 * ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau))
+        t = int(math.ceil(tau * self.mixing_time_ratio))
         return t
 
     def estimate_degree(self, s, u, v, neighbors):

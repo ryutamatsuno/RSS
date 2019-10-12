@@ -23,10 +23,11 @@ def mkdir(dirpath):
 
 class RSS:
 
-    def __init__(self, G, e, data_name):
+    def __init__(self, G, e, data_name, mixing_time_ratio=1.0):
         self.G = G
         self.e = e
         self.data_name = data_name
+        self.mixing_time_ratio = mixing_time_ratio
         self.delta = max([nx.degree(G, n) for n in G.nodes()])
 
         # buf
@@ -52,10 +53,10 @@ class RSS:
 
         if type(self) == RSS:
             mkdir(topdir + '/RSS')
-            return topdir + '/RSS/' + self.data_name + '_' + str(k) + uord.upper() + '.csv'
+            return topdir + '/RSS/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(k) + uord.upper() + '.csv'
         elif type(self) == RSS2:
             mkdir(topdir + '/RSS2')
-            return topdir + '/RSS2/' + self.data_name + '_' + str(k) + uord.upper() + '.csv'
+            return topdir + '/RSS2/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(k) + uord.upper() + '.csv'
 
     def preload_time(self, k):
         if k in self.loaded:
@@ -80,9 +81,9 @@ class RSS:
             else:
                 # actual time
                 if type(self) == RSS:
-                    sampler = actRSS(self.G, self.e)
+                    sampler = actRSS(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
                 elif type(self) == RSS2:
-                    sampler = actRSS2(self.G, self.e)
+                    sampler = actRSS2(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
                 ts = []
                 for l in range(n_buf_samples):
                     start = time.time()
@@ -98,10 +99,10 @@ class RSS:
                 self.tD[2] = np.loadtxt(fname, delimiter=',').tolist()
             else:
                 # actual time
-                if type(self) == RecursiveSampling:
-                    sampler = actRSS(self.G, self.e)
-                elif type(self) == RecursiveSampling2:
-                    sampler = actRSS2(self.G, self.e)
+                if type(self) == RSS:
+                    sampler = actRSS(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
+                elif type(self) == RSS2:
+                    sampler = actRSS2(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
                 ts = []
                 for l in range(n_buf_samples):
                     start = time.time()
@@ -153,13 +154,14 @@ class RSS:
         print('DegreePropSampling(%d):'%k, np.mean(self.tD[k]))
 
     def t_k(self, k):
-
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = self.n
         rho = 2 * delta * k
         tau = rho * (ln(binom(n, k)) + ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau))
+        t = int(math.ceil(tau * self.mixing_time_ratio))
         return t
 
     def time_uniform_state_sample(self, k) -> int:
@@ -235,13 +237,14 @@ class RSS2(RSS):
     """
 
     def t_k(self, k):
-
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = self.n
         rho = 2 * delta * k
         tau = rho * (ln(binom(n, k)) + 3 * ln(k) + ln(delta) + ln(1 / e))
-        t = int(math.ceil(tau))
+        t = int(math.ceil(tau * self.mixing_time_ratio))
         return t
 
     def estimate_degree(self, s, u, v, neighbors):

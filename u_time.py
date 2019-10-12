@@ -28,7 +28,8 @@ def stop(key=''):
     return t
 
 def time2str(sec:int):
-    txt = ''
+    #x = '%.4f[s]'%sec
+    txt = None
     if sec > 0:
         s = sec % 60
         sec = sec // 60
@@ -41,11 +42,10 @@ def time2str(sec:int):
         h = sec % 24
         sec = sec // 24
         txt = '%2d[h]'%(h) + txt
-    #print(sec)
     if sec > 0:
         d = sec
         txt = '%2d[d]'%(d) + txt
-
+    #txt += '  = ' + x
     return txt
 
 

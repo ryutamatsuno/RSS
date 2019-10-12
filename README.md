@@ -7,7 +7,7 @@ Basic implementation of RSS and RSS+ for SDM 2020 paper: Improved mixing time of
 ## Dependencies
 
 Please run setup.sh to install numpy, networkx, and pandas by pip.
-If you use other package managers, e.g., pip3, conda, install these libraries by mannually.
+If you use other package managers, e.g., pip3, conda, install these libraries by manually.
 
 - Python >=3.0
 - NumPy >=1.16.0
@@ -21,10 +21,28 @@ If you use other package managers, e.g., pip3, conda, install these libraries by
 ### Obtain k-subgrah samples
 
 ```
-
+> python3 main.py ba100 5 RSS2 0.01 0.05 100
+arguments;
+data set         : ba100
+k                : 5
+model_name       : RSS2
+mixing_time_ratio: 0.01
+e                : 0.05
+n_samples        : 100
+n= 100 m= 196  k= 5
+    100/100 46.80[s] estimated: 46.80[s]
+over all time:46.80[s]
+Obtained 5-subgraphs
+(4, 9, 12, 41, 70)
+(1, 2, 7, 31, 36)
+(0, 3, 4, 38, 62)
+(3, 4, 5, 28, 45)
+(3, 9, 16, 32, 92)
+....etc
 ```
 
 ## Experiments
+
 
 ```
 
@@ -33,54 +51,68 @@ If you use other package managers, e.g., pip3, conda, install these libraries by
 ### Uniformity
 
 ```
-> python3 exp_uniformity.py ba10 4 RSS2 0.001
+> python3 exp_uniformity.py ba10 4 RSS2 0.001 0.05 100
+Will be updated
 ```
 
 ### Actual sampling time
 
 ```
-> python3 exp_samplingtime.py ba10 3 RSS 100
-data set: ba10.edg
-n= 10 , m= 16 , k= 3 , e= 0.05
-model_name: RSS2
-n_samples: 100
-      0/100   0.00051570[s]  sample: (1, 3, 4)
-     10/100   0.00038052[s]  sample: (2, 4, 5)
-     20/100   0.00037479[s]  sample: (1, 4, 5)
-     30/100   0.00042248[s]  sample: (2, 7, 8)
-     40/100   0.00036335[s]  sample: (4, 5, 9)
-     50/100   0.00050211[s]  sample: (2, 3, 6)
-     60/100   0.00051332[s]  sample: (2, 3, 7)
-     70/100   0.00047135[s]  sample: (1, 4, 9)
-     80/100   0.00100541[s]  sample: (2, 4, 8)
-     90/100   0.00046992[s]  sample: (2, 3, 4)
-Sampling time: 0.0005170845985412598  +- 0.0002009598472167978 [s]
+> python3 exp_samplingtime.py ba100 5 RSS2 0.01 0.05 100
+arguments;
+data set         : ba100
+k                : 5
+model_name       : RSS2
+mixing_time_ratio: 0.01
+e                : 0.05
+n_samples        : 100
+n= 100 , m= 196 , k= 5 , e= 0.05
+      0/100   0.11357760[s]
+     10/100   0.08788133[s]
+     20/100   0.13831544[s]
+     30/100   0.42238927[s]
+     40/100   0.11166596[s]
+     50/100   0.20234227[s]
+     60/100   0.10551357[s]
+     70/100   1.28051376[s]
+     80/100   1.41313481[s]
+     90/100   0.58689308[s]
+Sampling time: 0.3596782636642456  +- 0.303922752851285 [s]
+ ~   0.36[s]
 ```
 
 ### Estimated sampling time
 
 ```
-> python3 exp_estimatedtime.py ba10 3 RSS 100
-data set: ba10
-n= 10 , m= 16 , k= 3 , e= 0.05
-model_name: RSS
-n_samples: 100
+> python3 exp_estimatedtime.py ba100 5 RSS2 0.01 0.05 100
+arguments;
+data set         : ba100
+k                : 5
+model_name       : RSS2
+mixing_time_ratio: 0.01
+e                : 0.05
+n_samples        : 100
+n= 100 , m= 196 , k= 5 , e= 0.05
 Preloading: 3
-UniformSampling   : 0.0009583020210266113
-DegreePropSampling: 0.38076204110383993
-
-Done: 0.0016303062438964844 [s]
-      0/100           0.000638[s]
-     10/100           0.001529[s]
-     20/100           0.003451[s]
-     30/100           0.000499[s]
-     40/100           0.002074[s]
-     50/100           0.000943[s]
-     60/100           0.000419[s]
-     70/100           0.001246[s]
-     80/100           0.000377[s]
-     90/100           0.001246[s]
-Estimated Sampling time: 0.0008749151229858398  +- 0.0006712058020837339 [s]
+UniformSampling(3)   : 0.00021479129791259765
+DegreePropSampling(3): 0.003637859308719635
+Done: 0.003550291061401367 [s]
+Preloading: 4
+UniformSampling(4)   : 0.006490474903583526
+DegreePropSampling(4): 0.07999450662696363
+Done: 0.001786947250366211 [s]
+      0/100           0.080127[s]
+     10/100           0.079260[s]
+     20/100           0.161446[s]
+     30/100           0.159903[s]
+     40/100           0.079615[s]
+     50/100           0.240156[s]
+     60/100           0.159556[s]
+     70/100           0.161512[s]
+     80/100           0.080054[s]
+     90/100           0.080210[s]
+Estimated Sampling time: 0.20397945891982325  +- 0.13570648085293419 [s]
+ ~   0.20[s]
 ```
 
 

@@ -31,6 +31,8 @@ class RSS:
 
 
     def t_k(self, k):
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = self.n
@@ -95,6 +97,8 @@ class RSS:
 class RSS2(RSS):
 
     def t_k(self, k):
+        if self.mixing_time_ratio == 0:
+            return 0
         e = self.e
         delta = self.delta
         n = self.n
