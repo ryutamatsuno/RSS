@@ -6,6 +6,7 @@ import u_time
 from sampling_util import ln, binom, RVE2, choose_one, neighbor_states, degree, num_edges_yields, state_merge
 from models.mixing_time import tPSRW_k
 
+
 class PSRW:
 
     def __init__(self, G, e=0.01):
@@ -19,7 +20,6 @@ class PSRW:
     def t_k(self, k):
         return tPSRW_k(self.n, k, self.e, self.delta, self.dia)
 
-
     def uniform_state_sample(self, k):
 
         while True:
@@ -30,8 +30,7 @@ class PSRW:
             if random.random() < 1 / m:
                 return state_merge(s, n)
 
-
-    def time_degree_prop_state_sample(self, k)-> int:
+    def time_degree_prop_state_sample(self, k) -> int:
         rt = 0
         n_times = 1000
         mixingtime = self.t_k(k)
@@ -57,8 +56,8 @@ class PSRW:
         u_time.start(key)
         while True:
             u_time.pause(key)
-            s = RVE2(self.G, k-1)
-            rt += self.time_degree_prop_state_sample(k-1)
+            s = RVE2(self.G, k - 1)
+            rt += self.time_degree_prop_state_sample(k - 1)
             u_time.resume(key)
             s_neighbor = neighbor_states(self.G, s)
             n = choose_one(s_neighbor)

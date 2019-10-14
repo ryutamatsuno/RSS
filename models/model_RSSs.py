@@ -7,8 +7,6 @@ from models.mixing_time import t_k, t_k2
 from sampling_util import ln, binom, choose_one, degree, neighbor_states, diff, state_merge, num_edges_yields
 
 
-
-
 class RSS:
 
     def __init__(self, G, e=0.01, mixing_time_ratio=1.0):
@@ -64,7 +62,6 @@ class RSS:
             m = num_edges_yields(s, n, s_neighbor)
             if random.random() < 1 / m:
                 return state_merge(s, n)
-
 
 
 class RSS2(RSS):

@@ -16,7 +16,6 @@ from models.model_RSSs import RSS, RSS2
 from models.model_MCMC import MCMCSampling
 from models.model_PSRW import PSRW
 
-
 if __name__ == "__main__":
 
     # load

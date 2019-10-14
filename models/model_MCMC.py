@@ -6,29 +6,24 @@ from sampling_util import ln, binom, RVE2, choose_one, boundVk, neighbor_states
 from models.mixing_time import tMCMC_k
 
 
-
 class MCMCSampling:
 
-    def __init__(self, G, e = 0.01):
+    def __init__(self, G, e=0.01):
 
         self.G = G
         self.e = e
 
         self.n = len(self.G.nodes())
-        self.delta = max([nx.degree(G,n) for n in G.nodes()])
+        self.delta = max([nx.degree(G, n) for n in G.nodes()])
         self.dia = nx.diameter(self.G)
 
-
-
-    def t_k(self,k):
+    def t_k(self, k):
         return tMCMC_k(self.n, k, self.e, self.delta, self.dia)
-
 
     def uniform_state_sample(self, k):
 
-        curr_s = RVE2(self.G,k)
+        curr_s = RVE2(self.G, k)
         curr_neighbors = neighbor_states(self.G, curr_s)
-
 
         for _ in range(self.t_k(k)):
             if random.random() < 0.5:
@@ -45,4 +40,3 @@ class MCMCSampling:
                 curr_neighbors = next_neighbors
 
         return curr_s
-

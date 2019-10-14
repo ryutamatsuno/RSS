@@ -2,29 +2,24 @@ import math
 import random
 import networkx as nx
 
-#from sampling import binom, ln, RVE2, choose_one, boundVk
+# from sampling import binom, ln, RVE2, choose_one, boundVk
 from sampling_util import ln, binom, RVE2, choose_one, boundVk, neighbor_states
 from models.mixing_time import tMCMC_k
 
 
-
 class MCMCSampling:
 
-    def __init__(self, G, e = 0.01):
+    def __init__(self, G, e=0.01):
 
         self.G = G
         self.e = e
 
         self.n = len(self.G.nodes())
-        self.delta = max([nx.degree(G,n) for n in G.nodes()])
+        self.delta = max([nx.degree(G, n) for n in G.nodes()])
         self.dia = nx.diameter(self.G)
 
-
-
-    def t_k(self,k):
+    def t_k(self, k):
         return tMCMC_k(self.n, k, self.e, self.delta, self.dia)
-
-
 
     def time(self, k):
         # running time
@@ -38,10 +33,9 @@ class MCMCSampling:
         curr_neighbors = neighbor_states(self.G, curr_s)
         rt += u_time.stop()
 
-
         u_time.start()
         for _ in range(n_times):
-            if random.random() < 1/2:
+            if random.random() < 1 / 2:
                 continue
 
             next_s = choose_one(curr_neighbors)
@@ -53,7 +47,6 @@ class MCMCSampling:
             if random.random() < current_degree / next_degree:
                 curr_s = next_s
                 curr_neighbors = next_neighbors
-        rt += u_time.stop()*mixingtime/n_times
+        rt += u_time.stop() * mixingtime / n_times
 
         return rt
-

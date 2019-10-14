@@ -6,7 +6,6 @@ from sampling_util import ln, binom, RVE2, choose_one, neighbor_states, degree, 
 from models.mixing_time import tPSRW_k
 
 
-
 class PSRW:
 
     def __init__(self, G, e=0.01):

@@ -177,7 +177,7 @@ class RSS:
             s_neighbor = neighbor_states(self.G, s)
             n = choose_one(s_neighbor)
             m = num_edges_yields(s, n, s_neighbor)
-            #rt += u_time.stop()
+            # rt += u_time.stop()
             if random.random() < 1 / m:
                 return rt + u_time.stop(key)
 
@@ -207,7 +207,7 @@ class RSS:
         y = 0
         u_time.start(key)
         for _ in range(n_samples):
-            if random.random() < 1/2:
+            if random.random() < 1 / 2:
                 continue
 
             u_time.pause(key)
@@ -229,9 +229,6 @@ class RSS:
 
 
 class RSS2(RSS):
-    """
-    Only use degree_prop_sampling
-    """
 
     def t_k(self, k):
         return t_k2(self.n, k, self.e, self.delta, self.mixing_time_ratio)
@@ -264,15 +261,13 @@ class RSS2(RSS):
         curr_f = self.estimate_degree(curr_s, u, v, neighbor_of_u)
         rt += u_time.stop(key)
 
-
-
         mixing_time = self.t_k(k)
         # MH Sampling
 
         y = 0
         u_time.start(key)
         for _ in range(n_samples):
-            if random.random() < 1/2:
+            if random.random() < 1 / 2:
                 continue
 
             u_time.pause(key)

@@ -32,29 +32,28 @@ Basic functions
 """
 
 
-
 def ln(x):
     return math.log(x)
 
 
 def boundVk(n, delta, k):
-    #n = len(G)
-    #delta = max([nx.degree(G, n) for n in nx.nodes(G)])
+    # n = len(G)
+    # delta = max([nx.degree(G, n) for n in nx.nodes(G)])
     return math.factorial(k - 1) * delta ** (k - 1) * n
+
 
 def binom(n, r):
     if r == 0 or n == r:
         return 1
     x = n
-    for i in range(max(r,n-r)+1,n):
+    for i in range(max(r, n - r) + 1, n):
         x *= i
-    x /= math.factorial(min(r,n-r))
+    x /= math.factorial(min(r, n - r))
     return x
 
 
 def choose_one(l):
     return l[np.random.randint(0, len(l))]
-
 
 
 def diff(x, y):
@@ -124,6 +123,7 @@ def neighbor_nodes(G, s) -> set:
     nb = nb.difference(set(s))
     return nb
 
+
 def __removable(G, s):
     """
     return removable nodes do no think about the adding node
@@ -142,7 +142,8 @@ def __removable(G, s):
     unrem = news.difference(rem)
     return rem, unrem
 
-def degree(G,s):
+
+def degree(G, s):
     d = 0
     news = set(s)
     do_remove, mynot_remove = __removable(G, s)
@@ -150,7 +151,7 @@ def degree(G,s):
     for x in neighbor_nodes(G, s):
 
         # check if
-        nei_x = set(nx.neighbors(G,x))
+        nei_x = set(nx.neighbors(G, x))
         node_connected2x = news.intersection(nei_x)
 
         news.add(x)
@@ -168,8 +169,6 @@ def degree(G,s):
             news.add(y)
         news.discard(x)
     return d
-
-
 
 
 def neighbor_states(G, s):
@@ -192,10 +191,10 @@ def neighbor_states(G, s):
             if len(node_connected2x) == 1 and (y in node_connected2x or y in mynot_remove):
                 continue
             if y in do_remove:
-               news.discard(y)
-               states.append(tuple(sorted(news)))
-               news.add(y)
-               continue
+                news.discard(y)
+                states.append(tuple(sorted(news)))
+                news.add(y)
+                continue
 
             news.discard(y)
             H = G.subgraph(news)
@@ -204,7 +203,6 @@ def neighbor_states(G, s):
             news.add(y)
         news.discard(x)
     return states
-
 
 
 def random_next_state(neighbor_states):
@@ -265,7 +263,6 @@ def RVE2(G, k):
     return tuple(sorted(s))
 
 
-
 def gen_all_ksub(G, k):
     """
 
@@ -276,12 +273,12 @@ def gen_all_ksub(G, k):
     if k == 1:
         return [(n,) for n in G.nodes()]
     if k == 2:
-        return [tuple(e if e[0] < e[1] else (e[1],e[0])) for e in nx.edges(G)]
+        return [tuple(e if e[0] < e[1] else (e[1], e[0])) for e in nx.edges(G)]
 
     N = len(G)
     ite = itertools.combinations(np.arange(N), k)
     S = []
-    nodes = np.array(G.nodes(),dtype=int)
+    nodes = np.array(G.nodes(), dtype=int)
     for v in ite:
         x = nodes[np.array(v)]
         H = G.subgraph(x)
@@ -290,10 +287,10 @@ def gen_all_ksub(G, k):
     return S
 
 
-def gen_gm(G,k):
+def gen_gm(G, k):
     if k == 1:
         return G
-    all_ksub = gen_all_ksub(G,k)
+    all_ksub = gen_all_ksub(G, k)
     all_set = [set(v) for v in all_ksub]
     N_M = len(all_ksub)
 
@@ -301,11 +298,11 @@ def gen_gm(G,k):
 
     for i in range(N_M - 1):
         t1 = all_set[i]
-        for j in range(i+1,N_M):
+        for j in range(i + 1, N_M):
             t2 = all_set[j]
 
             if len(t1.intersection(t2)) == k - 1:
-                edges.append((all_ksub[i],all_ksub[j]))
+                edges.append((all_ksub[i], all_ksub[j]))
 
     G_M = nx.Graph()
     G_M.add_nodes_from(all_ksub)

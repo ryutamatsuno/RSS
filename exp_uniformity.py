@@ -16,11 +16,13 @@ from models.buffed_RSSs import RSS, RSS2
 
 from sampling_util import load_G, gen_all_ksub
 
-def loss_uniform(samples,pi) -> float:
+
+def loss_uniform(samples, pi) -> float:
     n_samples = np.sum(samples)
-    freq = samples/n_samples
-    loss = np.sum( np.abs(freq - pi))/2
+    freq = samples / n_samples
+    loss = np.sum(np.abs(freq - pi)) / 2
     return float(loss)
+
 
 if __name__ == "__main__":
     # load
@@ -52,7 +54,7 @@ if __name__ == "__main__":
     print("mixing_time_ratio:", mixing_time_ratio)
     print("e                :", e)
     print("generating_ratio :", generating_ratio)
-    print("n=",n,"m=",len(nx.edges(G))," k=",k)
+    print("n=", n, "m=", len(nx.edges(G)), " k=", k)
     print("actual number of k-subgraph:", n_omega)
     print("n_samples:", n_samples)
 
@@ -62,9 +64,9 @@ if __name__ == "__main__":
     elif model_name == "RSS+" or model_name == "RSS2":
         sampler = RSS2(G, e, preload_k=k, mixing_time_ratio=mixing_time_ratio)
     else:
-        raise ValueError("%s is not implemented"%model_name)
+        raise ValueError("%s is not implemented" % model_name)
 
-    print("pi:",pi)
+    print("pi:", pi)
 
     counts = np.zeros(n_omega)
 
@@ -72,7 +74,7 @@ if __name__ == "__main__":
     done = 0
     # counting
     while done < n_samples:
-        vs = sampler.uniform_state_sample(k, n_samples=min(int(k*(n_samples-done)),1000000),only_accepted=True)
+        vs = sampler.uniform_state_sample(k, n_samples=min(int(k * (n_samples - done)), 1000000), only_accepted=True)
         for i in vs:
             counts[i] += 1
             done = int(np.sum(counts))
@@ -91,14 +93,6 @@ if __name__ == "__main__":
     freq = counts / n_samples
 
     # loss
-    loss = loss_uniform(counts,pi)
-    print("loss:",loss)
-    print("should be smaller than e:",e)
-
-
-
-
-
-
-
-
+    loss = loss_uniform(counts, pi)
+    print("loss:", loss)
+    print("should be smaller than e:", e)

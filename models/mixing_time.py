@@ -27,12 +27,13 @@ def t_k2(n, k, e, delta, mixing_time_ratio=1.0):
 def tMCMC_k(n, k, e, delta, dia, mixing_time_ratio=1.0):
     if mixing_time_ratio == 0:
         return 0
-    rho = 1/2 * math.factorial(k) * delta ** k * (dia + k - 1) * n
+    rho = 1 / 2 * math.factorial(k) * delta ** k * (dia + k - 1) * n
     tau = rho * (ln(binom(n, k)) + ln(1 / e))
     t = int(math.ceil(tau * mixing_time_ratio))
     if t == 0:
         t = 1
     return t
+
 
 def tPSRW_k(n, k, e, delta, dia, mixing_time_ratio=1.0):
     if mixing_time_ratio == 0:

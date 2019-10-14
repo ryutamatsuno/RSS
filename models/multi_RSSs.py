@@ -30,7 +30,6 @@ class RSS:
         self.n = len(G)
         self.delta = max([nx.degree(G, n) for n in G.nodes()])
 
-
     def t_k(self, k):
         return t_k(self.n, k, self.e, self.delta, self.mixing_time_ratio)
 

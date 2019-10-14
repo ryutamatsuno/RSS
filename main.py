@@ -38,7 +38,7 @@ if __name__ == "__main__":
     print("mixing_time_ratio:", mixing_time_ratio)
     print("e                :", e)
     print("n_samples        :", n_samples)
-    print("n=",n,"m=",len(nx.edges(G))," k=",k)
+    print("n=", n, "m=", len(nx.edges(G)), " k=", k)
 
     model_name = sys.argv[3]
     if model_name == "RSS":
@@ -46,9 +46,7 @@ if __name__ == "__main__":
     elif model_name == "RSS+" or model_name == "RSS2":
         sampler = RSS2(G, e, mixing_time_ratio=mixing_time_ratio)
     else:
-        raise ValueError("%s is not implemented"%model_name)
-
-
+        raise ValueError("%s is not implemented" % model_name)
 
     start = time.time()
 
@@ -77,11 +75,7 @@ if __name__ == "__main__":
     spent_time = time.time() - start
     print("over all time:" + u_time.time2str(spent_time))
 
-    print('Obtained %d-subgraphs'%k)
+    print('Obtained %d-subgraphs' % k)
     for v in samples[:5]:
         print(v)
     print('....etc')
-
-
-
-
