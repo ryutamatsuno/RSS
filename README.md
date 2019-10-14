@@ -6,13 +6,13 @@ Basic implementation of RSS and RSS+ for SDM 2020 paper: Improved mixing time of
 
 ## Dependencies
 
-Please run setup.sh to install numpy, networkx, and pandas by pip.
-If you use other package managers, e.g., pip3, conda, install these libraries by manually.
+Please install numpy, networkx, and pandas manually.
 
 - Python >=3.0
 - NumPy >=1.16.0
 - NetworkX >= 2.0
 - pandas >=0.25.0
+=
 
 
 
@@ -42,11 +42,6 @@ Obtained 5-subgraphs
 ```
 
 ## Experiments
-
-
-```
-
-```
 
 ### Uniformity
 
@@ -117,5 +112,9 @@ Estimated Sampling time: 0.20397945891982325  +- 0.13570648085293419 [s]
 
 
 ## Citation
+
+If accepted.
+
+## Licence
 
 Will be updated.

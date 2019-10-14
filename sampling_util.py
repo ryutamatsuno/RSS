@@ -294,3 +294,27 @@ def gen_all_ksub(G, k):
         if nx.is_connected(H):
             S.append(tuple(sorted(x)))
     return S
+
+
+def gen_gm(G,k):
+    if k == 1:
+        return G
+    all_ksub = gen_all_ksub(G,k)
+    all_set = [set(v) for v in all_ksub]
+    N_M = len(all_ksub)
+
+    edges = []
+
+    for i in range(N_M - 1):
+        t1 = all_set[i]
+        for j in range(i+1,N_M):
+            t2 = all_set[j]
+
+            if len(t1.intersection(t2)) == k - 1:
+                edges.append((all_ksub[i],all_ksub[j]))
+
+    G_M = nx.Graph()
+    G_M.add_nodes_from(all_ksub)
+    G_M.add_edges_from(edges)
+
+    return G_M

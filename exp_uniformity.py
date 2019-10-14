@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import u_time
 from datetime import datetime
 
-from models.multi_RSSs import RSS, RSS2
+from models.buffed_RSSs import RSS, RSS2
 
 from sampling_util import load_G, gen_all_ksub
 
@@ -48,12 +48,6 @@ if __name__ == "__main__":
 
     all_ksub = gen_all_ksub(G, k)
     n_omega = len(all_ksub)
-
-    #indexmap
-    ksub2index = {}
-    for i in range(n_omega):
-        ksub2index[all_ksub[i]] = i
-
 
     # generate ratio for each subgraph
 
@@ -88,10 +82,9 @@ if __name__ == "__main__":
     # counting
     while done < n_samples:
         vs = sampler.uniform_state_sample(k, n_samples=min(int(k*(n_samples-done)),1000000),only_accepted=True)
-        for v in vs:
-            i = ksub2index[v]
+        for i in vs:
             counts[i] += 1
-            done += 1
+            done = int(np.sum(counts))
             if done == n_samples:
                 break
 
