@@ -17,6 +17,7 @@ import u_time
 
 from sampling_util import load_G
 from models.model_RSSs import RSS, RSS2
+from models.model_MCMC import MCMCSampling
 
 # from Model_MCMC import MCMCSampling
 # from Model_PSRW import PSRW
@@ -43,19 +44,17 @@ if __name__ == "__main__":
     n = len(G)
     m = len(nx.edges(G))
 
-
     # load model
     if model_name == "RSS":
         sampler = RSS(G, e, mixing_time_ratio=mixing_time_ratio)
     elif model_name == "RSS+" or model_name == "RSS2":
         sampler = RSS2(G, e, mixing_time_ratio=mixing_time_ratio)
     elif model_name == "MCMC":
-        sampler = MCMCSampling(G, e, use_buffer=False)
+        sampler = MCMCSampling(G, e)
     elif model_name == "PSRW":
         sampler = PSRW(G, e, use_buffer=False)
     else:
         raise ValueError("%s is not implemented" % model_name)
-
 
     print('arguments;')
     print('data set         :', data_name)
