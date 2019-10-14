@@ -10,7 +10,7 @@ import networkx as nx
 
 import random
 
-from models.core_RSSs import t_k, t_k2
+from models.mixing_time import t_k, t_k2
 from sampling_util import ln, binom, neighbor_states, degree, num_edges_yields, state_merge
 
 

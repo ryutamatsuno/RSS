@@ -7,7 +7,7 @@ import itertools
 
 import random
 
-from models.core_RSSs import t_k, t_k2
+from models.mixing_time import t_k, t_k2
 from sampling_util import binom, ln, state_merge, gen_all_ksub, gen_gm
 
 def num_all_ksub(G, k)-> int:

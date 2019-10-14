@@ -17,6 +17,8 @@ import u_time
 
 from sampling_util import load_G
 from models.time_RSSs import RSS, RSS2
+from models.time_MCMC import MCMCSampling
+from models.time_PSRW import PSRW
 
 if __name__ == "__main__":
 

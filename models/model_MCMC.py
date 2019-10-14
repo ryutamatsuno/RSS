@@ -4,18 +4,9 @@ import networkx as nx
 
 #from sampling import binom, ln, RVE2, choose_one, boundVk
 from sampling_util import ln, binom, RVE2, choose_one, boundVk, neighbor_states
+from models.mixing_time import tMCMC_k
 
 
-
-def tMCMC_k(n, k, e, delta, dia, mixing_time_ratio=1.0):
-    if mixing_time_ratio == 0:
-        return 0
-    rho = 1/2 * math.factorial(k) * delta ** k * (dia + k - 1) * n
-    tau = rho * (ln(binom(n, k)) + ln(1 / e))
-    t = int(math.ceil(tau * mixing_time_ratio))
-    if t == 0:
-        t = 1
-    return t
 
 class MCMCSampling:
 

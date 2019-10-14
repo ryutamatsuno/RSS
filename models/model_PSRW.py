@@ -3,17 +3,8 @@ import random
 import networkx as nx
 
 from sampling_util import ln, binom, RVE2, choose_one, neighbor_states, degree, num_edges_yields, state_merge
+from models.mixing_time import tPSRW_k
 
-
-def tPSRW_k(n, k, e, delta, dia, mixing_time_ratio=1.0):
-    if mixing_time_ratio == 0:
-        return 0
-    rho = 1 / 2 * math.factorial(k - 1) * (k - 1) * delta ** k * (dia + k - 2) * n
-    tau = rho * (ln(k - 1) + ln(delta) + ln(binom(n, k - 1)) + ln(1 / e))
-    t = int(math.ceil(tau * mixing_time_ratio))
-    if t == 0:
-        t = 1
-    return t
 
 
 class PSRW:

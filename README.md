@@ -12,12 +12,11 @@ Please install numpy, networkx, and pandas manually.
 - NumPy >=1.16.0
 - NetworkX >= 2.0
 - pandas >=0.25.0
-=
 
-## Note
+## NOTE
 
-We keep making the algorithms faster and faster by optimizing calculation. Hence the programs run faster than the times reported in the paper.
- The codes here, which is the latest version, are the best implementation so far. Also, the results highly depends on machine specs.
+We keep making the algorithms faster and faster by optimizing calculation. Hence the programs do run faster than the times reported in the paper.
+The codes here, which is the latest one, are the best implementation so far. Also, the results would highly depend on machine specs.
 
 
 ## Usage Example
@@ -48,6 +47,8 @@ Obtained 5-subgraphs
 ## Experiments
 
 ### Uniformity
+
+Implemented for RSS and RSS+
 
 ```
 > python3 exp_uniformity.py soc-karate 4 RSS2 0.01 0.05 1000
@@ -83,6 +84,8 @@ should be smaller than e: 0.05
 
 ### Actual sampling time
 
+Implemented for RSS, RSS+, MCMCSampling, and PSRW.
+
 ```
 > python3 exp_samplingtime.py ba100 5 RSS2 0.01 0.05 100
 arguments;
@@ -108,6 +111,8 @@ Sampling time: 0.3596782636642456  +- 0.303922752851285 [s]
 ```
 
 ### Estimated sampling time
+
+Implemented for RSS, RSS+, MCMCSampling, and PSRW.
 
 ```
 > python3 exp_estimatedtime.py ba1000 5 RSS2 0.01 0.05 100
