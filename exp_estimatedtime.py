@@ -1,7 +1,3 @@
-"""
-Measure the sampling time
-"""
-
 import os
 import sys
 import random
@@ -21,11 +17,6 @@ from models.time_MCMC import MCMCSampling
 from models.time_PSRW import PSRW
 
 if __name__ == "__main__":
-
-    # load arguments
-    if len(sys.argv) < 3:
-        print('please run like "python3 main.py ba10 3 RSS"')
-        exit(0)
 
     # load
     data_name = sys.argv[1]

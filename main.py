@@ -1,6 +1,3 @@
-"""
-Check the uniformity of the algorithm
-"""
 import os
 import sys
 import random
@@ -20,12 +17,6 @@ from models.multi_RSSs import RSS, RSS2
 from sampling_util import load_G
 
 if __name__ == "__main__":
-
-    # load arguments
-    if len(sys.argv) < 3:
-        print('please run like "python3 main.py ba10 3 RSS"')
-        exit(0)
-
     # load
     data_name = sys.argv[1]
     k = int(sys.argv[2])

@@ -237,12 +237,6 @@ class RSS2(RSS):
         return t_k2(self.n, k, self.e, self.delta, self.mixing_time_ratio)
 
     def estimate_degree(self, s, u, v, neighbors):
-        """
-        estimate degree of e in G_k
-        :param e:
-        :param neighbors: neighbors of e[0]
-        :return:
-        """
         return degree(self.G, s) / num_edges_yields(u, v, neighbors)
 
     def time_degree_prop_state_sample(self, k) -> float:

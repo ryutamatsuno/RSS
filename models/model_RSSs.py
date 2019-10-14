@@ -53,11 +53,6 @@ class RSS:
         return curr_s
 
     def uniform_state_sample(self, k):
-        """
-        :param G:
-        :param k:
-        :return: tuple
-        """
         if k == 2:
             return choose_one(self.edges)
 
@@ -73,20 +68,11 @@ class RSS:
 
 
 class RSS2(RSS):
-    """
-    Only use degree_prop_sampling
-    """
 
     def t_k(self, k):
         return t_k2(self.n, k, self.e, self.delta, self.mixing_time_ratio)
 
     def estimate_degree(self, s, u, v, neighbors):
-        """
-        estimate degree of e in G_k, f in the paper
-        :param e:
-        :param neighbors: neighbors of e[0]
-        :return:
-        """
         return degree(self.G, s) / num_edges_yields(u, v, neighbors)
 
     def degree_prop_state_sample(self, k):

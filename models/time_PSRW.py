@@ -32,7 +32,6 @@ class PSRW:
 
 
     def time_degree_prop_state_sample(self, k)-> int:
-        # running time
         rt = 0
         n_times = 1000
         mixingtime = self.t_k(k)
@@ -53,11 +52,6 @@ class PSRW:
         return rt
 
     def time(self, k):
-        """
-        :param G:
-        :param k:
-        :return: tuple
-        """
         rt = 0
         key = 'U'
         u_time.start(key)

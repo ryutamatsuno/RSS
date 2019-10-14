@@ -2,7 +2,6 @@ import math
 import random
 import networkx as nx
 
-#from sampling import binom, ln, RVE2, choose_one, boundVk
 from sampling_util import ln, binom, RVE2, choose_one, boundVk, neighbor_states
 from models.mixing_time import tMCMC_k
 
@@ -11,13 +10,6 @@ from models.mixing_time import tMCMC_k
 class MCMCSampling:
 
     def __init__(self, G, e = 0.01):
-        """
-        :param G:
-        :param k:
-        :param num_pararell:
-        :param start_state:
-        :param all_states:
-        """
 
         self.G = G
         self.e = e

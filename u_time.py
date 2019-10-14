@@ -21,8 +21,6 @@ def resume(key = ''):
 
 
 def stop(key=''):
-    # if not key in __timekeys:
-    #     raise ValueError(key + ' is not started')
     t = time.time() - __timekeys[key]
     del __timekeys[key]
     return t
@@ -47,18 +45,3 @@ def time2str(sec:int):
         txt = '%2d[d]'%(d) + txt
     #txt += '  = ' + x
     return txt
-
-
-
-def running_time(f:Callable, n_times:int = 1) -> float:
-    ts = []
-
-    for _ in range(n_times):
-        start = time.time()
-        f()
-        ts.append(time.time() - start)
-
-    return sum(ts)/n_times
-
-
-

@@ -1,6 +1,3 @@
-"""
-Check the uniformity of the algorithm
-"""
 import os
 import sys
 import random
@@ -26,12 +23,6 @@ def loss_uniform(samples,pi) -> float:
     return float(loss)
 
 if __name__ == "__main__":
-
-    # load arguments
-    if len(sys.argv) < 3:
-        print('please run like "python3 main.py ba10 3 RSS"')
-        exit(0)
-
     # load
     data_name = sys.argv[1]
     k = int(sys.argv[2])

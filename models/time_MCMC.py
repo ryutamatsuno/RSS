@@ -11,13 +11,6 @@ from models.mixing_time import tMCMC_k
 class MCMCSampling:
 
     def __init__(self, G, e = 0.01):
-        """
-        :param G:
-        :param k:
-        :param num_pararell:
-        :param start_state:
-        :param all_states:
-        """
 
         self.G = G
         self.e = e
