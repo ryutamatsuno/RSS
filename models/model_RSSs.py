@@ -105,7 +105,7 @@ class RSS2(RSS):
                 continue
 
             u = self.degree_prop_state_sample(k - 1)
-            neighbor_of_u = neighbor_states(self.G,u)
+            neighbor_of_u = neighbor_states(self.G, u)
             v = choose_one(neighbor_of_u)
             next_s = state_merge(u, v)
             next_f = self.estimate_degree(next_s, u, v, neighbor_of_u)

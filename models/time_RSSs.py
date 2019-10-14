@@ -75,18 +75,22 @@ class RSS:
         n_buf_samples = 100
 
         if k == 3:
+
+            # actual time
+            if type(self) == RSS:
+                sampler = actRSS(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
+            elif type(self) == RSS2:
+                sampler = actRSS2(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
+            else:
+                raise ValueError()
+
             # U
             fname = self.buf_file_name(k, 'U')
             if os.path.exists(fname):
                 self.tU[k] = np.loadtxt(fname, delimiter=',').tolist()
             else:
-                # actual time
-                if type(self) == RSS:
-                    sampler = actRSS(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
-                elif type(self) == RSS2:
-                    sampler = actRSS2(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 ts = []
-                for l in range(n_buf_samples):
+                for _ in range(n_buf_samples):
                     start = time.time()
                     sampler.uniform_state_sample(k)
                     t = time.time() - start
@@ -99,13 +103,8 @@ class RSS:
             if os.path.exists(fname):
                 self.tD[2] = np.loadtxt(fname, delimiter=',').tolist()
             else:
-                # actual time
-                if type(self) == RSS:
-                    sampler = actRSS(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
-                elif type(self) == RSS2:
-                    sampler = actRSS2(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 ts = []
-                for l in range(n_buf_samples):
+                for _ in range(n_buf_samples):
                     start = time.time()
                     sampler.degree_prop_state_sample(2)
                     t = time.time() - start
@@ -161,56 +160,61 @@ class RSS:
         if k in self.tU:
             return np.random.choice(self.tU[k], 1)[0]
 
-        if k == 2:
-            u_time.start()
-            choose_one(self.edges)
-            return u_time.stop()
+        key = 'U' + str(k)
 
-        G = self.G
+        if k == 2:
+            u_time.start(key)
+            choose_one(self.edges)
+            return u_time.stop(key)
+
         rt = 0
+        u_time.start(key)
         while True:
-            s = RVE2(G, k - 1)  # self.degree_prop_state_sample(k - 1)
+            u_time.pause(key)
+            s = RVE2(self.G, k - 1)  # self.degree_prop_state_sample(k - 1)
             rt += self.time_degree_prop_state_sample(k - 1)
-            u_time.start()
+            u_time.resume(key)
             s_neighbor = neighbor_states(self.G, s)
             n = choose_one(s_neighbor)
             m = num_edges_yields(s, n, s_neighbor)
-            rt += u_time.stop()
+            #rt += u_time.stop()
             if random.random() < 1 / m:
-                return rt
+                return rt + u_time.stop(key)
 
     def time_degree_prop_state_sample(self, k) -> float:
         if k in self.tD:
             return np.random.choice(self.tD[k], 1)[0]
 
+        key = 'D' + str(k)
         if k == 2:
-            u_time.start()
+            u_time.start(key)
             x = self.edges[np.random.choice(self.edge_arange, 1, p=self.edge_prob)[0]]
-            return u_time.stop()
+            return u_time.stop(key)
 
         rt = 0
 
         # curr_s = self.uniform_state_sample(k)
         curr_s = RVE2(self.G, k)
         rt += self.time_uniform_state_sample(k)
-        u_time.start()
+
+        u_time.start(key)
         curr_d = degree(self.G, curr_s)
-        rt += u_time.stop()
+        rt += u_time.stop(key)
 
         n_samples = 100
         mixing_time = self.t_k(k)
 
         y = 0
-        u_time.start()
+        u_time.start(key)
         for _ in range(n_samples):
-            # if random.random() < 1/2:
-            #     continue
+            if random.random() < 1/2:
+                continue
 
-            u_time.pause()
+            u_time.pause(key)
             # next_s = self.uniform_state_sample(k)
             next_s = RVE2(self.G, k)
             y += self.time_uniform_state_sample(k)
-            u_time.resume()
+            u_time.resume(key)
 
             next_d = degree(self.G, next_s)
 
@@ -219,8 +223,8 @@ class RSS:
                 curr_s = next_s
                 curr_d = next_d
 
-        x = u_time.stop() + y
-        rt += (x / n_samples) * mixing_time / 2
+        x = u_time.stop(key) + y
+        rt += (x / n_samples) * mixing_time
         return rt
 
 
@@ -245,10 +249,11 @@ class RSS2(RSS):
         if k in self.tD:
             return np.random.choice(self.tD[k], 1)[0]
 
+        key = 'D' + str(k)
         if k == 2:
-            u_time.start()
+            u_time.start(key)
             x = self.edges[np.random.choice(self.edge_arange, 1, p=self.edge_prob)[0]]
-            return u_time.stop()
+            return u_time.stop(key)
 
         rt = 0
         n_samples = 100
@@ -258,26 +263,28 @@ class RSS2(RSS):
         u = RVE2(self.G, k - 1)
         rt += self.time_degree_prop_state_sample(k - 1)
 
-        u_time.start()
+        u_time.start(key)
         neighbor_of_u = neighbor_states(self.G, u)
         v = choose_one(neighbor_of_u)
         curr_s = state_merge(u, v)
         curr_f = self.estimate_degree(curr_s, u, v, neighbor_of_u)
-        u_time.stop()
+        rt += u_time.stop(key)
+
+
 
         mixing_time = self.t_k(k)
         # MH Sampling
 
         y = 0
-        u_time.start()
+        u_time.start(key)
         for _ in range(n_samples):
-            # if random.random() < 1/2:
-            #     continue
-            u_time.pause()
-            # u = self.degree_prop_state_sample(k - 1)
+            if random.random() < 1/2:
+                continue
+
+            u_time.pause(key)
             u = RVE2(self.G, k - 1)
             y += self.time_degree_prop_state_sample(k - 1)
-            u_time.resume()
+            u_time.resume(key)
 
             neighbor_of_u = neighbor_states(self.G, u)
             v = choose_one(neighbor_of_u)
@@ -289,6 +296,6 @@ class RSS2(RSS):
                 curr_s = next_s
                 curr_f = next_f
 
-        x = u_time.stop() + y
-        rt += (x / n_samples) * mixing_time / 2
+        x = u_time.stop(key) + y
+        rt += (x / n_samples) * mixing_time
         return rt
