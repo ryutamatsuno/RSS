@@ -37,15 +37,9 @@ def ln(x):
     return math.log(x)
 
 
-def boundVk(G, k):
-    """
-    Upper bound of V^k
-    :param G: nx.Graph
-    :param k: integer, 1<k<|V|
-    :return:
-    """
-    n = len(G)
-    delta = max([nx.degree(G, n) for n in nx.nodes(G)])
+def boundVk(n, delta, k):
+    #n = len(G)
+    #delta = max([nx.degree(G, n) for n in nx.nodes(G)])
     return math.factorial(k - 1) * delta ** (k - 1) * n
 
 def binom(n, r):

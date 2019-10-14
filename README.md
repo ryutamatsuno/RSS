@@ -14,6 +14,10 @@ Please install numpy, networkx, and pandas manually.
 - pandas >=0.25.0
 =
 
+## Note
+
+We keep making the algorithms faster and faster by optimizing calculation. Hence the programs run faster than the times reported in the paper.
+ The codes here, which is the latest version, are the best implementation so far. Also, the results highly depends on machine specs.
 
 
 ## Usage Example
@@ -46,8 +50,35 @@ Obtained 5-subgraphs
 ### Uniformity
 
 ```
-> python3 exp_uniformity.py ba10 4 RSS2 0.001 0.05 100
-Will be updated
+> python3 exp_uniformity.py soc-karate 4 RSS2 0.01 0.05 1000
+arguments;
+data set         : soc-karate
+k                : 4
+model_name       : RSS2
+mixing_time_ratio: 0.01
+e                : 0.05
+generating_ratio : 1000
+n= 34 m= 78  k= 4
+actual number of k-subgraph: 2363
+n_samples: 2363000
+pre-loading: 2
+...time:   0.002[s]
+pre-loading: 3
+...time:   0.161[s]
+pre-loading: 4
+...time:   2.023[s]
+pi: 0.00042319085907744394
+ 386245/2363000  2[m]59.87[s] estimated: 18[m]20.41[s] loss:0.03132
+ 772328/2363000  5[m]58.04[s] estimated: 18[m]15.47[s] loss:0.02216
+1157518/2363000  8[m]55.67[s] estimated: 18[m]13.54[s] loss:0.01786
+1544243/2363000 11[m]55.24[s] estimated: 18[m]14.46[s] loss:0.01553
+1930269/2363000 14[m]53.97[s] estimated: 18[m]14.38[s] loss:0.01383
+2316276/2363000 17[m]54.21[s] estimated: 18[m]15.88[s] loss:0.01261
+2363000/2363000 18[m]28.69[s] estimated: 18[m]28.69[s] loss:0.01243
+over all time:18[m]28.69[s]
+loss: 0.012426576385950064
+should be smaller than e: 0.05
+
 ```
 
 ### Actual sampling time

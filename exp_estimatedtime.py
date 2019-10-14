@@ -31,14 +31,13 @@ if __name__ == "__main__":
     model_name = sys.argv[3]
     mixing_time_ratio = float(sys.argv[4]) if len(sys.argv) > 4 else 1.0
     e = float(sys.argv[5]) if len(sys.argv) > 5 else 0.05
-    n_samples = int(sys.argv[6]) if len(sys.argv) > 6 else 100
+    n_samples = int(sys.argv[6]) if len(sys.argv) > 6 else 10
 
     # load graph data
     G = load_G(data_name + '.edg')
 
     n = len(G)
     m = len(nx.edges(G))
-
 
     if model_name == "RSS":
         sampler = RSS(G, e, data_name, mixing_time_ratio=mixing_time_ratio)

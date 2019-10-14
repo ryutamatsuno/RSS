@@ -5,14 +5,12 @@ import random
 import networkx as nx
 import numpy as np
 
-
 from models.core_RSSs import t_k, t_k2
 from sampling_util import ln, binom, choose_one, RVE2, neighbor_states, degree, diff, num_edges_yields, state_merge
 
 import u_time
 
 from models.model_RSSs import RSS as actRSS, RSS2 as actRSS2
-
 
 topdir = './samplingtime_buf'
 
@@ -54,10 +52,12 @@ class RSS:
 
         if type(self) == RSS:
             mkdir(topdir + '/RSS')
-            return topdir + '/RSS/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(k) + uord.upper() + '.csv'
+            return topdir + '/RSS/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(
+                k) + uord.upper() + '.csv'
         elif type(self) == RSS2:
             mkdir(topdir + '/RSS2')
-            return topdir + '/RSS2/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(k) + uord.upper() + '.csv'
+            return topdir + '/RSS2/' + self.data_name + '_' + str(self.mixing_time_ratio) + '_' + str(
+                k) + uord.upper() + '.csv'
 
     def preload_time(self, k):
         if k in self.loaded:
@@ -82,9 +82,9 @@ class RSS:
             else:
                 # actual time
                 if type(self) == RSS:
-                    sampler = actRSS(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
+                    sampler = actRSS(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 elif type(self) == RSS2:
-                    sampler = actRSS2(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
+                    sampler = actRSS2(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 ts = []
                 for l in range(n_buf_samples):
                     start = time.time()
@@ -101,9 +101,9 @@ class RSS:
             else:
                 # actual time
                 if type(self) == RSS:
-                    sampler = actRSS(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
+                    sampler = actRSS(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 elif type(self) == RSS2:
-                    sampler = actRSS2(self.G, self.e, mixing_time_ratio = self.mixing_time_ratio)
+                    sampler = actRSS2(self.G, self.e, mixing_time_ratio=self.mixing_time_ratio)
                 ts = []
                 for l in range(n_buf_samples):
                     start = time.time()
@@ -113,7 +113,7 @@ class RSS:
                 np.savetxt(fname, np.array(ts), delimiter=',')
                 self.tD[2] = ts
 
-            # D
+            # D3
             fname = self.buf_file_name(k, 'D')
             if os.path.exists(fname):
                 self.tD[k] = np.loadtxt(fname, delimiter=',').tolist()
@@ -151,8 +151,8 @@ class RSS:
                 np.savetxt(fname, np.array(ts), delimiter=',')
                 self.tD[k] = ts
 
-        print('UniformSampling(%d)   :'%k, np.mean(self.tU[k]))
-        print('DegreePropSampling(%d):'%k, np.mean(self.tD[k]))
+        print('UniformSampling(%d)   :' % k, np.mean(self.tU[k]))
+        print('DegreePropSampling(%d):' % k, np.mean(self.tD[k]))
 
     def t_k(self, k):
         return t_k(self.n, k, self.e, self.delta, self.mixing_time_ratio)

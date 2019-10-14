@@ -18,6 +18,7 @@ import u_time
 from sampling_util import load_G
 from models.model_RSSs import RSS, RSS2
 from models.model_MCMC import MCMCSampling
+from models.model_PSRW import PSRW
 
 # from Model_MCMC import MCMCSampling
 # from Model_PSRW import PSRW
@@ -52,7 +53,7 @@ if __name__ == "__main__":
     elif model_name == "MCMC":
         sampler = MCMCSampling(G, e)
     elif model_name == "PSRW":
-        sampler = PSRW(G, e, use_buffer=False)
+        sampler = PSRW(G, e)
     else:
         raise ValueError("%s is not implemented" % model_name)
 
@@ -73,7 +74,7 @@ if __name__ == "__main__":
         v = sampler.uniform_state_sample(k)
         t = time.time() - start
         ts.append(t)
-        if l % int(n_samples / 10) == 0:
+        if n_samples < 10 or l % int(n_samples / 10) == 0:
             print('%7d/%d %12.8f[s]' % (l, n_samples, t))
 
     averagetime = np.mean(ts)

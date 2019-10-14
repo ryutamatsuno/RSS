@@ -3,7 +3,7 @@ import random
 import networkx as nx
 
 #from sampling import binom, ln, RVE2, choose_one, boundVk
-from sampling_util import ln, binom, RVE2, choose_one, boundVk
+from sampling_util import ln, binom, RVE2, choose_one, boundVk, neighbor_states
 
 
 
