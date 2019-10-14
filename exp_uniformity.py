@@ -67,9 +67,9 @@ if __name__ == "__main__":
 
     model_name = sys.argv[3]
     if model_name == "RSS":
-        sampler = RSS(G, e, mixing_time_ratio=mixing_time_ratio)
+        sampler = RSS(G, e, preload_k=k, mixing_time_ratio=mixing_time_ratio)
     elif model_name == "RSS+" or model_name == "RSS2":
-        sampler = RSS2(G, e, mixing_time_ratio=mixing_time_ratio)
+        sampler = RSS2(G, e, preload_k=k, mixing_time_ratio=mixing_time_ratio)
     else:
         raise ValueError("%s is not implemented"%model_name)
 

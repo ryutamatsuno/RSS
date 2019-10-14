@@ -79,35 +79,35 @@ Sampling time: 0.3596782636642456  +- 0.303922752851285 [s]
 ### Estimated sampling time
 
 ```
-> python3 exp_estimatedtime.py ba100 5 RSS2 0.01 0.05 100
+> python3 exp_estimatedtime.py ba1000 5 RSS2 0.01 0.05 100
 arguments;
-data set         : ba100
+data set         : ba1000
 k                : 5
 model_name       : RSS2
 mixing_time_ratio: 0.01
 e                : 0.05
 n_samples        : 100
-n= 100 , m= 196 , k= 5 , e= 0.05
+n= 1000 , m= 1996 , k= 5 , e= 0.05
 Preloading: 3
-UniformSampling(3)   : 0.00021479129791259765
-DegreePropSampling(3): 0.003637859308719635
-Done: 0.003550291061401367 [s]
+UniformSampling(3)   : 0.00025741815567016603
+DegreePropSampling(3): 0.022935573291778564
+Done: 0.0015039443969726562 [s]
 Preloading: 4
-UniformSampling(4)   : 0.006490474903583526
-DegreePropSampling(4): 0.07999450662696363
-Done: 0.001786947250366211 [s]
-      0/100           0.080127[s]
-     10/100           0.079260[s]
-     20/100           0.161446[s]
-     30/100           0.159903[s]
-     40/100           0.079615[s]
-     50/100           0.240156[s]
-     60/100           0.159556[s]
-     70/100           0.161512[s]
-     80/100           0.080054[s]
-     90/100           0.080210[s]
-Estimated Sampling time: 0.20397945891982325  +- 0.13570648085293419 [s]
- ~   0.20[s]
+UniformSampling(4)   : 0.03597504796981812
+DegreePropSampling(4): 2.7592527645092013
+Done: 0.0008516311645507812 [s]
+      0/100           2.786326[s]
+     10/100           2.774249[s]
+     20/100           8.284748[s]
+     30/100          13.834887[s]
+     40/100           2.786267[s]
+     50/100          19.326597[s]
+     60/100           2.763487[s]
+     70/100           2.744342[s]
+     80/100           5.510705[s]
+     90/100           8.303727[s]
+Estimated Sampling time: 7.3951951717948905  +- 5.390041545307455 [s]
+ ~   7.40[s]
 ```
 
 
