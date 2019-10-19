@@ -153,4 +153,5 @@ If accepted.
 
 ## Licence
 
-Will be updated.
+ALL rights reserved 2019, Ryuta Matsuno.
+Everything on this repository including idea, method, and codes cannot be used except for reviewers of our SDM paper.
