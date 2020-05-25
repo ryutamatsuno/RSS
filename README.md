@@ -148,10 +148,15 @@ Estimated Sampling time: 7.3951951717948905  +- 5.390041545307455 [s]
 
 
 ## Citation
-
-If accepted.
-
-## Licence
-
-ALL rights reserved 2019, Ryuta Matsuno.
-Everything on this repository including idea, method, and codes cannot be used except for reviewers of our SDM paper.
+```
+@inbook{doi:10.1137/1.9781611976236.64,
+author = {Ryuta Matsuno and Aristides Gionis},
+title = {Improved mixing time for <italic>k</italic>-subgraph sampling},
+booktitle = {Proceedings of the 2020 SIAM International Conference on Data Mining},
+chapter = {},
+pages = {568--576},
+doi = {10.1137/1.9781611976236.64},
+URL = {https://epubs.siam.org/doi/abs/10.1137/1.9781611976236.64},
+eprint = {https://epubs.siam.org/doi/pdf/10.1137/1.9781611976236.64}
+}
+```
